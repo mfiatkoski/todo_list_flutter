@@ -16,10 +16,10 @@ class EmptyState extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
+       child: Column(
+         mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+           children: [
           Icon(
             Icons.check_circle_outline,
             size: 72,

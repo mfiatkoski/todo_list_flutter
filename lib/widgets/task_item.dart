@@ -23,7 +23,7 @@ class TaskItem extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: ListTile(
-        leading Checkbox(
+        leading: Checkbox(
           value: isCompleted,
           onChanged: (_) => onToggle(),
         ),

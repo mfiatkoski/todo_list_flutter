@@ -40,7 +40,7 @@ class AppStorage {
     final savedUsername = prefs.getString(_usernameKey) ?? defaultUserName;
     final savedPassword = prefs.getString(_passwordKey) ?? defaultPassword;
 
-    return == savedUsername && password == savedPassword;
+    return savedUsername == username && password == savedPassword;
   }
 
   Future<String> loadPassword() async {

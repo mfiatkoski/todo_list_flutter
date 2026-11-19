@@ -57,8 +57,43 @@ class _TodoAppState extends State<TodoApp> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    
-  }
+@override
+Widget build(BuildContext context) {
+  const seedColor = Color(0xFF1565C0);
+
+  return MaterialApp(
+    title: 'Minhas Tarefas',
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color.fromARGB(255, 19, 32, 109),
+      ),
+      appBarTheme: const AppBarTheme(
+        centerTitle: false,
+      ),
+    ),
+    darkTheme: ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color.fromARGB(255, 60, 122, 194),
+        brightness: Brightness.dark,
+      ),
+      appBarTheme: const AppBarTheme(
+       centerTitle: false,
+      ),
+    ),
+    themeMode: _darkMode ? ThemeMode.dark : ThemeMode.light,
+    home: _isLoading
+    ? const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    )
+    : _isLoggedIn
+    ? HomePage(
+      onLogout: _handleLogout,
+      onThemeChanged: _handleThemeChanged,
+    )
+    : LoginPage(onLogin: _handleLogin)
+  );
+ }
 }

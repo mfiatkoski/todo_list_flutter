@@ -1,11 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/app_settings.dart';
 
-class AppStorage {
+class AppStorage{
   static const String _loggedInKey = 'isLoggedIn';
   static const String _usernameKey = 'username';
   static const String _passwordKey = 'password';
-  static const String _darkModeKey = 'darkmode';
+  static const String _darkModeKey = 'darkMode';
   static const String _confirmDeleteKey = 'confirmDelete';
 
   static const String defaultUserName = 'aluno';
@@ -14,11 +14,11 @@ class AppStorage {
   Future<void> ensureDefaultUser() async {
     final prefs = await SharedPreferences.getInstance();
 
-    if (!prefs.containsKey(_usernameKey)) {
+    if (!prefs.containsKey(_usernameKey)){
       await prefs.setString(_usernameKey, defaultUserName);
     }
 
-    if (!prefs.containsKey(_passwordKey)) {
+    if (!prefs.containsKey(_passwordKey)){
       await prefs.setString(_passwordKey, defaultPassword);
     }
   }
@@ -40,7 +40,7 @@ class AppStorage {
     final savedUsername = prefs.getString(_usernameKey) ?? defaultUserName;
     final savedPassword = prefs.getString(_passwordKey) ?? defaultPassword;
 
-    return savedUsername == username && password == savedPassword;
+    return username == savedUsername && password == savedPassword;
   }
 
   Future<String> loadPassword() async {
@@ -48,18 +48,19 @@ class AppStorage {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_passwordKey) ?? defaultPassword;
   }
-  Future<void> savePassword(String password) async{
+
+  Future<void> savePassword(String password) async {
     final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(_passwordKey, password);
+    await prefs.setString(_passwordKey, password);
   }
 
-  Future<AppSettings> loadSettings() async{
-   final prefs = await SharedPreferences.getInstance();
+  Future<AppSettings> loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
 
-   return AppSettings(
-    darkmode: prefs.getBool(_darkModeKey) ?? false,
-    confirmDelete: prefs.getBool(_confirmDeleteKey) ?? true,
-   );
+    return AppSettings(
+      darkMode: prefs.getBool(_darkModeKey) ?? false,
+      confirmDelete: prefs.getBool(_confirmDeleteKey) ?? true,
+    );
   }
 
   Future<void> saveDarkMode(bool value) async {

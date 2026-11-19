@@ -1,4 +1,4 @@
-class Task {
+class Task{
   final String id;
   final String title;
   bool isCompleted;
@@ -11,8 +11,8 @@ class Task {
     this.isCompleted = false,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson(){
+    return{
       'id': id,
       'title': title,
       'isCompleted': isCompleted,
@@ -20,31 +20,28 @@ class Task {
     };
   }
 
-  factory Task.fromJson(Map<String, dynamic> json) {
+  factory Task.fromJson(Map<String, dynamic> json){
     return Task(
       id: json['id'] as String,
       title: json['title'] as String,
-      isCompleted: json['isCompleted'] as bool? ?? false,
-      date: json['date'] != null
-          ? DateTime.parse(json['date'] as String)
-          : DateTime.now(),
+      isCompleted: json['isCompleted'] as bool,
+      date: json['date'] != null 
+        ? DateTime.parse(json['date'] as String)
+        : DateTime.now(),
     );
   }
 }
 
-bool isSameDay(DateTime a, DateTime b) {
-  return a.year == b.year &&
-      a.month == b.month &&
-      a.day == b.day;
+bool isSameDay(DateTime a, DateTime b){
+  return a.year == b.year && a.month == b.month && a.day == b.day;
 }
 
-String formatShortDate(DateTime date) {
+String formatShortDate(DateTime date){
   final day = date.day.toString().padLeft(2, '0');
   final month = date.month.toString().padLeft(2, '0');
-
   return '$day/$month/${date.year}';
 }
 
-DateTime dateOnly(DateTime date) {
+DateTime dateOnly(DateTime date){
   return DateTime(date.year, date.month, date.day);
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../services/app_storage.dart';
 
@@ -18,7 +17,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final AppStorage _appStorage = AppStorage();
-
   bool _isLoading = true;
   bool _darkMode = false;
   bool _confirmDelete = true;
@@ -31,17 +29,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _loadSettings() async {
     final settings = await _appStorage.loadSettings();
-
-    if (!mounted) return;
-
     setState(() {
-      _darkMode = settings.darkmode;
+      _darkMode = settings.darkMode;
       _confirmDelete = settings.confirmDelete;
       _isLoading = false;
     });
   }
 
-  Future<void> _toogledDarkMode(bool value) async {
+  Future<void> _toggleDarkMode(bool value) async {
     setState(() {
       _darkMode = value;
     });
@@ -50,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
     widget.onThemeChanged(value);
   }
 
-  Future<void> toggleConfirmDelete(bool value) async {
+  Future<void> _toggleConfirmDelete(bool value) async {
     setState(() {
       _confirmDelete = value;
     });
@@ -67,41 +62,40 @@ class _SettingsPageState extends State<SettingsPage> {
           content: const Text('Deseja sair da conta?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () => Navigator.pop(context, false), 
               child: const Text('Cancelar'),
             ),
             FilledButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () => Navigator.pop(context, true), 
               child: const Text('Sair'),
-            ),
+            )
           ],
         );
-      },
+      }
     );
 
-    if (shouldLogout == true) {
+    if (shouldLogout == true){
       await _appStorage.setLoggedIn(false);
-
-      if (!mounted) {
+      
+      if (!mounted){
         return;
       }
 
       Navigator.pop(context);
+
       widget.onLogout();
     }
   }
 
   Future<void> _changePassword() async {
-    final changed = await showDialog<bool>(
-      context: context,
+    final changed = await showDialog(
+      context: context, 
       builder: (context) {
-        return _ChangePasswordDialog(
-          appStorage: _appStorage,
-        );
-      },
+        return _ChangePasswordDialog(appStorage: _appStorage);
+      }
     );
 
-    if (changed == true && mounted) {
+    if (changed == true && mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Senha alterada com sucesso!'),
@@ -111,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configurações'),
@@ -119,43 +113,41 @@ class _SettingsPageState extends State<SettingsPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              children: [
-                const _SectionTitle('Aparência'),
-                SwitchListTile(
-                  title: const Text('Modo escuro'),
-                  subtitle: Text(
-                    _darkMode ? '🌙 Ativado' : '☀️ Desativado',
-                  ),
-                  value: _darkMode,
-                  onChanged: _toogledDarkMode,
+            children: [
+              const _SectionTitle('APARÊNCIA'),
+              SwitchListTile(
+                title: const Text('Modo escuro'),
+                subtitle: Text(_darkMode ? '🌙 Ativado' : '☀️ Desativado'),
+                value: _darkMode, 
+                onChanged: _toggleDarkMode,
+              ),
+              const _SectionTitle('TAREFAS'),
+              SwitchListTile(
+                title: const Text('Confirmar exclusão'),
+                subtitle: const Text(
+                  'Pedir confirmação antes de apagar uma tarefa',
                 ),
-                const _SectionTitle('TAREFAS'),
-                SwitchListTile(
-                  title: const Text('Confirmar exclusão'),
-                  subtitle: const Text(
-                    'Pedir confirmação antes de apagar uma tarefa',
-                  ),
-                  value: _confirmDelete,
-                  onChanged: toggleConfirmDelete,
-                ),
-                const _SectionTitle('CONTA'),
-                ListTile(
-                  title: const Text('Alterar senha'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: _changePassword,
-                ),
-                ListTile(
-                  title: const Text('Sair da conta'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: _confirmLogout,
-                ),
-                const _SectionTitle('SOBRE'),
-                const ListTile(
-                  title: Text('Minhas tarefas'),
-                  subtitle: Text('Versão 1.0.0'),
-                ),
-              ],
-            ),
+                value: _confirmDelete, 
+                onChanged: _toggleConfirmDelete
+              ),
+              const _SectionTitle('CONTA'),
+              ListTile(
+                title: const Text('Alterar senha'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: _changePassword,
+              ),
+              ListTile(
+                title: const Text('Sair da conta'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: _confirmLogout,
+              ),
+              const _SectionTitle('SOBRE'),
+              const ListTile(
+                title: Text('Minhas Tarefas'),
+                subtitle: Text('Versão 1.0.0'),
+              ),
+            ],
+          ),
     );
   }
 }
@@ -168,21 +160,13 @@ class _ChangePasswordDialog extends StatefulWidget {
   });
 
   @override
-  State<_ChangePasswordDialog> createState() =>
-      _ChangePasswordDialogState();
+  State<_ChangePasswordDialog> createState() => _ChangePasswordDialogState();
 }
 
-class _ChangePasswordDialogState
-    extends State<_ChangePasswordDialog> {
-  final TextEditingController _currentController =
-      TextEditingController();
-
-  final TextEditingController _newController =
-      TextEditingController();
-
-  final TextEditingController _confirmController =
-      TextEditingController();
-
+class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
+  final TextEditingController _currentController = TextEditingController();
+  final TextEditingController _newController = TextEditingController();
+  final TextEditingController _confirmController = TextEditingController();
   String? _errorMessage;
   bool _isSaving = false;
 
@@ -198,11 +182,11 @@ class _ChangePasswordDialogState
     final current = _currentController.text.trim();
     final next = _newController.text.trim();
     final confirm = _confirmController.text.trim();
+    final savedPassword = await widget.appStorage.loadPassword();
 
-    final savedPassword =
-        await widget.appStorage.loadPassword();
-
-    if (!mounted) return;
+    if (!mounted){
+      return;
+    }
 
     if (current != savedPassword) {
       setState(() {
@@ -211,17 +195,16 @@ class _ChangePasswordDialogState
       return;
     }
 
-    if (next.isEmpty) {
+    if (next.isEmpty){
       setState(() {
-        _errorMessage = 'A nova senha não pode ficar vazia';
+        _errorMessage = 'A nova senha não pode ficar vazia.';
       });
       return;
     }
 
-    if (next != confirm) {
+    if (next != confirm){
       setState(() {
-        _errorMessage =
-            'A confirmação não confere com a nova senha';
+        _errorMessage = 'A confirmação não confere com a nova senha.';
       });
       return;
     }
@@ -233,13 +216,15 @@ class _ChangePasswordDialogState
 
     await widget.appStorage.savePassword(next);
 
-    if (!mounted) return;
+    if (!mounted){
+      return;
+    }
 
     Navigator.pop(context, true);
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return AlertDialog(
       title: const Text('Alterar senha'),
       content: SingleChildScrollView(
@@ -283,13 +268,11 @@ class _ChangePasswordDialogState
       ),
       actions: [
         TextButton(
-          onPressed: _isSaving
-              ? null
-              : () => Navigator.pop(context),
+          onPressed: _isSaving ? null : () => Navigator.pop(context), 
           child: const Text('Cancelar'),
         ),
         FilledButton(
-          onPressed: _isSaving ? null : _save,
+          onPressed: _isSaving ? null : _save, 
           child: const Text('Salvar'),
         ),
       ],
@@ -299,7 +282,6 @@ class _ChangePasswordDialogState
 
 class _SectionTitle extends StatelessWidget {
   final String title;
-
   const _SectionTitle(this.title);
 
   @override
@@ -309,9 +291,9 @@ class _SectionTitle extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

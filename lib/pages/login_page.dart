@@ -19,9 +19,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
+  void dispose(){
+    _usernameController.clear();
+    _passwordController.clear();
     super.dispose();
   }
 
@@ -30,14 +30,14 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text.trim();
     final isValid = await _appStorage.validateLogin(username, password);
 
-    if (!mounted) {
+    if(!mounted){
       return;
     }
 
-    if (!isValid) {
+    if(!isValid){
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Usuário ou senhas incorretos.'),
+          content: Text('Usuário ou senha incorretos.'),
         ),
       );
 
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -76,9 +76,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Organize seu dia :)',
+                    'Organize seu dia',
                     style: textTheme.bodyLarge?.copyWith(
-                      color: colorScheme.onSurfaceVariant)
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   const SizedBox(height: 40),
                   TextField(
@@ -86,14 +87,14 @@ class _LoginPageState extends State<LoginPage> {
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       labelText: 'Usuário',
-                      hintText: 'Aluno',
+                      hintText: 'aluno',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
-                   const SizedBox(height: 16),
-                   TextField(
+                  const SizedBox(height: 16),
+                  TextField(
                     controller: _passwordController,
                     obscureText: true,
                     textInputAction: TextInputAction.done,
@@ -101,20 +102,19 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       labelText: 'Senha',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)
-                      )
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                   ),
-                   const SizedBox(height: 24,),
-                   SizedBox(
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
                     width: double.infinity,
                     height: 52,
                     child: FilledButton(
                       onPressed: _login,
                       child: const Text('Entrar'),
                     ),
-                   ),
-
+                  ),
                 ],
               ),
             ),

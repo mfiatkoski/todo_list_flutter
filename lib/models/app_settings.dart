@@ -1,9 +1,9 @@
-class AppSettings {
-  bool darkmode;
+class AppSettings{
+  bool darkMode;
   bool confirmDelete;
 
   AppSettings({
-    this.darkmode = false,
+    this.darkMode = false,
     this.confirmDelete = true,
   });
 }

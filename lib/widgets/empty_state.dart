@@ -6,20 +6,19 @@ class EmptyState extends StatelessWidget {
   const EmptyState({
     super.key,
     this.message =
-        'Você não possui tarefas.\nAdicione uma tarefa para começar.',
+      'Você não possui tarefas.\nAdicione uma terefa para começar.'
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.all(32),
-       child: Column(
-         mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-           children: [
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Icon(
             Icons.check_circle_outline,
             size: 72,
@@ -27,7 +26,7 @@ class EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Tudo Organizado',
+            'Tudo organizado!',
             style: textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
